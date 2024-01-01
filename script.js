@@ -16,6 +16,7 @@ function play(playerSelection, computerSelection){
 
     if(playerSelection.toLowerCase() == "rock" && computerSelection.toLowerCase() == "scissor"){
         return "You win! Rock beats scissor"
+        
     }
     if(playerSelection.toLowerCase() == "scissor" && computerSelection.toLowerCase() == "paper"){
         return "You win! Scissor beats Paper"
@@ -39,4 +40,28 @@ function play(playerSelection, computerSelection){
 
 function game() {
     
+    let playerSelection;
+    let computerSelection;
+    let computer = 0;
+    let player = 0;
+
+    for(; ;) {
+        playerSelection = prompt("Choose: ");
+        computerSelection = getComputerChoice();
+
+        let result = play(playerSelection, computerSelection);
+        console.log(result)
+
+        if(result.slice(4, 5) == "w") player++;
+        else if(result.slice(4, 5) == "l") computer++;
+
+        if(player == 5){
+            console.log("You win the game!");
+            break;
+        }
+        if(computer == 5){
+            console.log("Computer wins the game!");
+            break;
+        }
+    }
 }
