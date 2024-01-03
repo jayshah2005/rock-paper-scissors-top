@@ -6,7 +6,7 @@ const options = ['Rock', 'Paper', 'Scissor']
 const finalResult = document.querySelector('#finalResult');
 const scoreBoard = document.querySelector('#scoreBoard');
 
-
+// GUI
 function presentOptions() {
 
     resetButtons();
@@ -17,7 +17,7 @@ function presentOptions() {
         button.id = option.toLowerCase();
         button.className = 'button options';
         button.textContent = option + '!';
-        button.onclick = onclick;
+        button.onclick = onclickOption;
         result.before(button)
     })
 }
@@ -39,11 +39,8 @@ function mainScreen() {
     result.before(playButton)
 }
 
-mainScreen();
-updateScore();
 // Game
-
-function onclick(action) {
+function onclickOption(action) {
     const outcome = play(action.target.id, getComputerChoice())
     result.textContent = outcome
 }
@@ -106,25 +103,6 @@ function play(playerSelection, computerSelection){
     return result
 }
 
-function game() {
-    
-    let playerSelection;
-    let computerSelection;
-
-    for(; ;) {
-        playerSelection = prompt("Choose: ").toLowerCase();
-        computerSelection = getComputerChoice();
-
-        while(playerSelection != 'rock' && playerSelection != 'paper' && playerSelection != 'scissor') {
-            playerSelection = prompt("Choose between rock, paper and scissor: ").toLowerCase();
-        }
-
-        play(playerSelection, computerSelection);
-
-    }
-}
-
-
 function checkForWinner() {
     if(playerScore == 5){
         finalResult.textContent = 'You win the game!'
@@ -137,3 +115,6 @@ function checkForWinner() {
         mainScreen();
     }
 }
+
+mainScreen();
+updateScore();
