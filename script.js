@@ -3,39 +3,24 @@ function getComputerChoice() {
 
     switch(choice) {
         case 0:
-            return "Rock"
+            return "rock"
         case 1:
-            return "Paper"
+            return "paper"
         case 2:
-            return "Scissor"
+            return "scissor"
     }
 }
 
 function play(playerSelection, computerSelection){
     /** There are 3*3= 9 outcomes so list them all one by one ig*/
 
-    if(playerSelection.toLowerCase() == "rock" && computerSelection.toLowerCase() == "scissor"){
-        return "You win! Rock beats scissor"
-        
+    if(playerSelection == "rock" && computerSelection == "scissor" || playerSelection == "scissor" && computerSelection == "paper" || playerSelection == "paper" && computerSelection == "rock"){
+    return "You win!"
+    } else if(playerSelection == "scissor" && computerSelection == "rock" || playerSelection == "paper" && computerSelection == "scissor" || playerSelection == "rock" && computerSelection == "paper"){
+        return "You lose!"
+    } else{
+        return "It's a tie"
     }
-    if(playerSelection.toLowerCase() == "scissor" && computerSelection.toLowerCase() == "paper"){
-        return "You win! Scissor beats Paper"
-    }
-    if(playerSelection.toLowerCase() == "paper" && computerSelection.toLowerCase() == "rock"){
-        return "You win! Paper beats Rock"
-    }
-
-    if(playerSelection.toLowerCase() == "scissor" && computerSelection.toLowerCase() == "rock"){
-        return "You lose! Rock beats scissor"
-    }
-    if(playerSelection.toLowerCase() == "paper" && computerSelection.toLowerCase() == "scissor"){
-        return "You lose! Paper beats scissor"
-    }
-    if(playerSelection.toLowerCase() == "rock" && computerSelection.toLowerCase() == "paper"){
-        return "You lose! Paper beats rock"
-    }
-
-    return "It's a tie"
 }
 
 function game() {
@@ -46,14 +31,26 @@ function game() {
     let player = 0;
 
     for(; ;) {
-        playerSelection = prompt("Choose: ");
+        playerSelection = prompt("Choose: ").toLowerCase();
         computerSelection = getComputerChoice();
 
-        let result = play(playerSelection, computerSelection);
-        console.log(result)
+        while(playerSelection != 'rock' && playerSelection != 'paper' && playerSelection != 'scissor') {
+            playerSelection = prompt("Choose between rock, paper and scissor: ").toLowerCase();
+        }
 
-        if(result.slice(4, 5) == "w") player++;
-        else if(result.slice(4, 5) == "l") computer++;
+        let result = play(playerSelection, computerSelection);
+        
+
+        if(result.slice(4, 5) == "w") {
+            player++;
+            result += ` ${playerSelection} beats ${computerSelection}`
+        }
+        else if(result.slice(4, 5) == "l") {
+            computer++;
+            result += ` ${computerSelection} beats ${playerSelection}`
+        }
+
+        console.log(result);
 
         if(player == 5){
             console.log("You win the game!");
