@@ -1,3 +1,72 @@
+let computerScore = 0;
+let playerScore = 0;
+
+const result = document.querySelector("#result");
+const options = ['Rock', 'Paper', 'Scissor']
+const finalResult = document.querySelector('#finalResult');
+const scoreBoard = document.querySelector('#scoreBoard');
+
+
+function presentOptions() {
+
+    resetButtons();
+    reset();
+
+    options.forEach(option => {
+        const button = document.createElement('button');
+        button.id = option.toLowerCase();
+        button.className = 'button options';
+        button.textContent = option + '!';
+        button.onclick = onclick;
+        result.before(button)
+    })
+}
+
+function resetButtons() {
+
+    const buttons = document.querySelectorAll('button')
+
+    Array.from(buttons).forEach((button) => button.remove())
+}
+
+function mainScreen() {
+    const playButton = document.createElement('button')
+    playButton.id = 'play'
+    playButton.textContent = 'Play!'
+    playButton.className = 'button'
+    playButton.onclick = presentOptions 
+
+    result.before(playButton)
+}
+
+mainScreen();
+updateScore();
+// Game
+
+function onclick(action) {
+    const outcome = play(action.target.id, getComputerChoice())
+    result.textContent = outcome
+}
+
+function updateScore() {
+    const player = document.querySelector('#player')
+    const computer = document.querySelector('#computer')
+
+    player.textContent = 'Player: ' + playerScore
+    computer.textContent = 'Computer: ' + computerScore
+
+    checkForWinner();
+}
+
+function reset() {
+    computerScore = 0;
+    playerScore = 0;
+    updateScore();
+
+    result.textContent = ''
+    finalResult.textContent = ''
+}
+
 function getComputerChoice() {
     let choice = Math.floor(Math.random() * 3)
 
@@ -12,23 +81,35 @@ function getComputerChoice() {
 }
 
 function play(playerSelection, computerSelection){
-    /** There are 3*3= 9 outcomes so list them all one by one ig*/
+
+    let result;
 
     if(playerSelection == "rock" && computerSelection == "scissor" || playerSelection == "scissor" && computerSelection == "paper" || playerSelection == "paper" && computerSelection == "rock"){
-    return "You win!"
+    result = "You win!"
     } else if(playerSelection == "scissor" && computerSelection == "rock" || playerSelection == "paper" && computerSelection == "scissor" || playerSelection == "rock" && computerSelection == "paper"){
-        return "You lose!"
+        result = "You lose!"
     } else{
-        return "It's a tie"
+        result = "It's a tie"
     }
+
+    if(result.slice(4, 5) == "w") {
+        playerScore++;
+        result += ` ${playerSelection} beats ${computerSelection}`
+    }
+    else if(result.slice(4, 5) == "l") {
+        computerScore++;
+        result += ` ${computerSelection} beats ${playerSelection}`
+    }
+
+    updateScore();
+
+    return result
 }
 
 function game() {
     
     let playerSelection;
     let computerSelection;
-    let computer = 0;
-    let player = 0;
 
     for(; ;) {
         playerSelection = prompt("Choose: ").toLowerCase();
@@ -38,27 +119,21 @@ function game() {
             playerSelection = prompt("Choose between rock, paper and scissor: ").toLowerCase();
         }
 
-        let result = play(playerSelection, computerSelection);
-        
+        play(playerSelection, computerSelection);
 
-        if(result.slice(4, 5) == "w") {
-            player++;
-            result += ` ${playerSelection} beats ${computerSelection}`
-        }
-        else if(result.slice(4, 5) == "l") {
-            computer++;
-            result += ` ${computerSelection} beats ${playerSelection}`
-        }
+    }
+}
 
-        console.log(result);
 
-        if(player == 5){
-            console.log("You win the game!");
-            break;
-        }
-        if(computer == 5){
-            console.log("Computer wins the game!");
-            break;
-        }
+function checkForWinner() {
+    if(playerScore == 5){
+        finalResult.textContent = 'You win the game!'
+        resetButtons();
+        mainScreen();
+    }
+    if(computerScore == 5){
+        finalResult.textContent = 'You lose the game!'
+        resetButtons();
+        mainScreen();
     }
 }
